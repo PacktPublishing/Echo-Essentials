@@ -11,7 +11,9 @@ import (
 
 // HealthCheck - Health Check Handler
 func HealthCheck(c echo.Context) error {
-	c.Logger().Debugf("RequestID: %s", c.Get(middlewares.RequestIDContextKey).(uuid.UUID))
+	if reqID, ok := c.Get(middlewares.RequestIDContextKey).(uuid.UUID); ok {
+		c.Logger().Debugf("RequestID: %s", reqID.String())
+	}
 	resp := renderings.HealthCheckResponse{
 		Message: "Everything is good!",
 	}
