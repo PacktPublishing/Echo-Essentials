@@ -1,21 +1,39 @@
 package main
 
 import (
+	"database/sql"
+
+	_ "github.com/mattn/go-sqlite3"
+
 	"github.com/PacktPublishing/Echo-Essentials/chapter3/handlers"
 	"github.com/PacktPublishing/Echo-Essentials/chapter3/models"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
+	"github.com/labstack/gommon/log"
 )
 
 func main() {
 	// create a new echo instance
 	e := echo.New()
+	e.Logger.SetLevel(log.DEBUG)
 
 	// Signing Key for our auth middleware
 	var signingKey = []byte("superdupersecret!")
 	e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 			c.Set(models.SigningContextKey, signingKey)
+			return next(c)
+		}
+	})
+
+	// add database to context
+	db, err := sql.Open("sqlite3", "./service.db")
+	if err != nil {
+		log.Fatalf("error opening database: %v\n", err)
+	}
+	e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
+		return func(c echo.Context) error {
+			c.Set(models.DBContextKey, db)
 			return next(c)
 		}
 	})
