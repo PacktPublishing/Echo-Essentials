@@ -1,6 +1,8 @@
 package main
 
 import (
+	"database/sql"
+
 	"github.com/PacktPublishing/Echo-Essentials/chapter5/bindings"
 	"github.com/PacktPublishing/Echo-Essentials/chapter5/handlers"
 	"github.com/PacktPublishing/Echo-Essentials/chapter5/middlewares"
@@ -8,6 +10,7 @@ import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 	"github.com/labstack/gommon/log"
+	_ "github.com/mattn/go-sqlite3"
 )
 
 func main() {
@@ -29,6 +32,18 @@ func main() {
 	e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 			c.Set(models.SigningContextKey, signingKey)
+			return next(c)
+		}
+	})
+
+	// add database to context
+	db, err := sql.Open("sqlite3", "./service.db")
+	if err != nil {
+		log.Fatalf("error opening database: %v\n", err)
+	}
+	e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
+		return func(c echo.Context) error {
+			c.Set(models.DBContextKey, db)
 			return next(c)
 		}
 	})
