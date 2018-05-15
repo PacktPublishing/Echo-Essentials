@@ -17,6 +17,7 @@ const RemindersTmpl = `
                 <title>{{.Title}}</title>
         </head>
         <body>
+			<a href={{ .Reverse "login" }}>Login</a>
                 <table>
                         <th>
                                 <td>Reminder Name</td>

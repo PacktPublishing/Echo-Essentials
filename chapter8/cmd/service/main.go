@@ -68,7 +68,7 @@ func main() {
 	e.GET("/health-check", handlers.HealthCheck)
 	e.GET("/error", handlers.Error)
 	// Authentication routes
-	e.POST("/login", handlers.Login)
+	e.POST("/login", handlers.Login).Name = "login"
 	e.POST("/logout", handlers.Logout)
 
 	// V1 Routes

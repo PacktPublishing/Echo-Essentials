@@ -2,6 +2,8 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
+	"net/http"
 
 	_ "github.com/mattn/go-sqlite3"
 
@@ -63,6 +65,23 @@ func main() {
 	v1Reminders.GET("/:id", handlers.GetReminder)
 	// /v1/reminder/:id
 
+	e.GET("/i/*/from/a/*/*", WildcardMadlibHandler)
+	e.GET("/i/:verb/with/a/:adjective/:noun", ParameterMadlibHandler)
+
 	// start the server, and log if it fails
 	e.Logger.Fatal(e.Start(":8080"))
+}
+
+func WildcardMadlibHandler(c echo.Context) error {
+	return c.String(http.StatusOK, "WildcardMadlibHandler!")
+}
+
+func ParameterMadlibHandler(c echo.Context) error {
+	return c.String(http.StatusOK,
+		fmt.Sprintf("I %s with a %s %s!",
+			c.Param("verb"),
+			c.Param("adjective"),
+			c.Param("noun"),
+		),
+	)
 }
