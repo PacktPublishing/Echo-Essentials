@@ -1,8 +1,6 @@
 package models
 
 import (
-	"database/sql"
-
 	"github.com/pkg/errors"
 	uuid "github.com/satori/go.uuid"
 )
@@ -13,7 +11,7 @@ type User struct {
 	PasswordHash []byte
 }
 
-func GetUserByUsername(db *sql.DB, username string) (User, error) {
+func GetUserByUsername(db MockableDB, username string) (User, error) {
 	var user = User{}
 
 	rows, err := db.Query(
