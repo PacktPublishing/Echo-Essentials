@@ -24,3 +24,7 @@ that is used within the book.  Each chapter directory is a completely
 independent Go package, which includes vendor code which is known to work with
 the examples.
 
+### Download a free PDF
+
+ <i>If you have already purchased a print or Kindle version of this book, you can get a DRM-free PDF version at no cost.<br>Simply click on the link to claim your free PDF.</i>
+<p align="center"> <a href="https://packt.link/free-ebook/9781789139433">https://packt.link/free-ebook/9781789139433 </a> </p>
